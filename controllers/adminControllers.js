@@ -91,7 +91,7 @@ module.exports.uploadFile_post = async (req, res) => {
   const {uniqueName} = req.body;
   const file = req.file;
 
-  const blockBlobClient = containerClient.getBlockBlobClient(uniqueName);
+  const blockBlobClient = containerClient.getBlockBlobClient(uniqueName+".jpg");
 
   try {
     await blockBlobClient.upload(file.buffer, file.buffer.length).then(result => {
@@ -99,7 +99,7 @@ module.exports.uploadFile_post = async (req, res) => {
       res.status(200).send({msg: "success"});
     });
   } catch (error) {
-    console.error("Error uploading file:", error.message);
+    console.error("Error uploading file:", error);
     res.status(400).send({msg: "Error"});
   }
 }

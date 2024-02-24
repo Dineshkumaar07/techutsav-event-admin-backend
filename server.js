@@ -7,7 +7,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: process.env.ALLOWED_ORIGIN }));
+app.use(cors({ origin: "*" }));
 
 const adminRoutes = require("./routes/adminRoutes");
 app.use("/admin", adminRoutes);

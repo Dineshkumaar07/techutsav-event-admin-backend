@@ -7,10 +7,10 @@ var upload = multer({
     storage: storage,
     fileFilter: function(req, file, callback) {
         console.log(file.mimetype);
-        if (file.mimetype == 'image/jpg') {
+        if (file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
             callback(null, true);
         } else {
-            console.log("Only JPG & PNG file supported!");
+            console.log("Only JPEG and JPG & PNG file supported!");
             callback(null, false);
         }
     },
