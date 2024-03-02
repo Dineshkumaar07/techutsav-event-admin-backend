@@ -1,6 +1,7 @@
 const Event = require("../models/Event");
 const User = require("../models/User");
 const { BlobServiceClient } = require("@azure/storage-blob");
+const emailjs = require('@emailjs/nodejs');
 
 module.exports.createEvent_post = async (req, res) => {
   const { uniqueName } = req.body;
@@ -86,20 +87,53 @@ const blobServiceClient =
   BlobServiceClient.fromConnectionString(connectionString);
 const containerClient = blobServiceClient.getContainerClient(containerName);
 
-
 module.exports.uploadFile_post = async (req, res) => {
-  const {uniqueName} = req.body;
+  const { uniqueName } = req.body;
   const file = req.file;
 
-  const blockBlobClient = containerClient.getBlockBlobClient(uniqueName+".jpg");
+  const blockBlobClient = containerClient.getBlockBlobClient(
+    uniqueName + ".jpg"
+  );
 
   try {
-    await blockBlobClient.upload(file.buffer, file.buffer.length).then(result => {
-      // console.log(result);
-      res.status(200).send({msg: "success"});
-    });
+    await blockBlobClient
+      .upload(file.buffer, file.buffer.length)
+      .then((result) => {
+        // console.log(result);
+        res.status(200).send({ msg: "success" });
+      });
   } catch (error) {
     console.error("Error uploading file:", error);
-    res.status(400).send({msg: "Error"});
+    res.status(400).send({ msg: "Error" });
   }
-}
+};
+
+module.exports.updateUser_put = async (req, res) => {
+  const { _id, paid, fullName, email } = req.body;
+
+  User.updateOne({ _id: _id }, { paid: paid })
+    .then((result) => {
+      var params = {
+        to_name: fullName,
+        to_mail: email,
+      };
+      console.log(params);
+      emailjs
+        .send("service_1o6asp3", "template_30ahbql", params, {
+          publicKey: "NuqZNK9_2HRsMPffr",
+          privateKey: "1MLMSzsTl4VFlg5o4a_8k"
+        })
+        .then((result) => {
+          console.log(result);
+          console.log("Email Sent!");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      res.status(200).json({ msg: "Success" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ msg: "Error" });
+    });
+};

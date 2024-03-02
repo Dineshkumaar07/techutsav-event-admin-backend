@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
   paid: {
     type: Boolean,
   },
+  transactionNumber: {
+    type: String,
+    default: ""
+  }
 });
 
 const User = mongoose.model("user", userSchema);
