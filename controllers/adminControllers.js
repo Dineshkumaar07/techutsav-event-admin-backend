@@ -109,9 +109,9 @@ module.exports.uploadFile_post = async (req, res) => {
 };
 
 module.exports.updateUser_put = async (req, res) => {
-  const { _id, paid, fullName, email } = req.body;
+  const { _id, paid, fullName, email, transactionNumber } = req.body;
 
-  User.updateOne({ _id: _id }, { paid: paid })
+  User.updateOne({ _id: _id }, { paid: paid, transactionNumber: transactionNumber })
     .then((result) => {
       var params = {
         to_name: fullName,
