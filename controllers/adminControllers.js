@@ -116,6 +116,7 @@ module.exports.updateUser_put = async (req, res) => {
       var params = {
         to_name: fullName,
         to_mail: email,
+        main_message: paid ? "Your Payment has been successfully Verified by the Administrator.\nOur Team is very Eager to meet you up in the event. Wish you have a safe journey.\nRegards, Team TechUtsav24." : "Your Payment transaction address is not matched. Please check the transaction id of your Payment and try once again.\n Thank you.\nRegards, Team TechUtsav24."
       };
       console.log(params);
       emailjs
