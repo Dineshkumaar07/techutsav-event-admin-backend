@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
   },
   transactionNumber: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
 
 const User = mongoose.model("user", userSchema);

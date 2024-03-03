@@ -1,7 +1,7 @@
 const Event = require("../models/Event");
 const User = require("../models/User");
 const { BlobServiceClient } = require("@azure/storage-blob");
-const emailjs = require('@emailjs/nodejs');
+const emailjs = require("@emailjs/nodejs");
 
 module.exports.createEvent_post = async (req, res) => {
   const { uniqueName } = req.body;
@@ -14,7 +14,7 @@ module.exports.createEvent_post = async (req, res) => {
         res.status(400).json({ msg: "Error" });
       });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -49,7 +49,7 @@ module.exports.getEventData_post = (req, res) => {
   const { uniqueName } = req.body;
   Event.findOne({ uniqueName: uniqueName })
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       res.status(200).json({ result });
     })
     .catch((err) => {
@@ -59,10 +59,10 @@ module.exports.getEventData_post = (req, res) => {
 
 module.exports.remove_delete = (req, res) => {
   const { uniqueName } = req.body;
-  console.log(uniqueName);
+  // console.log(uniqueName);
   Event.deleteOne({ uniqueName: uniqueName })
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       res.status(200).json({ msg: "success" });
     })
     .catch((err) => {
@@ -99,7 +99,7 @@ module.exports.uploadFile_post = async (req, res) => {
     await blockBlobClient
       .upload(file.buffer, file.buffer.length)
       .then((result) => {
-        // console.log(result);
+        // // console.log(result);
         res.status(200).send({ msg: "success" });
       });
   } catch (error) {
@@ -111,30 +111,35 @@ module.exports.uploadFile_post = async (req, res) => {
 module.exports.updateUser_put = async (req, res) => {
   const { _id, paid, fullName, email, transactionNumber } = req.body;
 
-  User.updateOne({ _id: _id }, { paid: paid, transactionNumber: transactionNumber })
+  User.updateOne(
+    { _id: _id },
+    { paid: paid, transactionNumber: transactionNumber }
+  )
     .then((result) => {
       var params = {
         to_name: fullName,
         to_mail: email,
-        main_message: paid ? "Your Payment has been successfully Verified by the Administrator.\nOur Team is very Eager to meet you up in the event. Wish you have a safe journey.\nRegards, Team TechUtsav24." : "Your Payment transaction address is not matched. Please check the transaction id of your Payment and try once again.\n Thank you.\nRegards, Team TechUtsav24."
+        main_message: paid
+          ? "Your Payment has been successfully Verified by the Administrator.\nOur Team is very Eager to meet you up in the event. Wish you have a safe journey.\nRegards, Team TechUtsav24."
+          : "Your Payment transaction address is not matched. Please check the transaction id of your Payment and try once again.\n Thank you.\nRegards, Team TechUtsav24.",
       };
-      console.log(params);
+      // console.log(params);
       emailjs
         .send("service_1o6asp3", "template_30ahbql", params, {
           publicKey: "NuqZNK9_2HRsMPffr",
-          privateKey: "1MLMSzsTl4VFlg5o4a_8k"
+          privateKey: "1MLMSzsTl4VFlg5o4a_8k",
         })
         .then((result) => {
-          console.log(result);
-          console.log("Email Sent!");
+          // console.log(result);
+          // console.log("Email Sent!");
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
       res.status(200).json({ msg: "Success" });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       res.status(400).json({ msg: "Error" });
     });
 };
