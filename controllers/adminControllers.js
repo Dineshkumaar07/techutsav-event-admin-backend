@@ -70,15 +70,15 @@ module.exports.remove_delete = (req, res) => {
     });
 };
 
-module.exports.getStudents_get = (req, res) => {
-  User.find({})
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(400).json({ msg: "err" });
-    });
-};
+// module.exports.getStudents_get = (req, res) => {
+//   User.find({})
+//     .then((result) => {
+//       res.status(200).json(result);
+//     })
+//     .catch((err) => {
+//       res.status(400).json({ msg: "err" });
+//     });
+// };
 
 const connectionString = process.env.CONNECTIONSTRING;
 const containerName = process.env.CONTAINERNAME;
@@ -108,38 +108,38 @@ module.exports.uploadFile_post = async (req, res) => {
   }
 };
 
-module.exports.updateUser_put = async (req, res) => {
-  const { _id, paid, fullName, email, transactionNumber } = req.body;
+// module.exports.updateUser_put = async (req, res) => {
+//   const { _id, paid, fullName, email, transactionNumber } = req.body;
 
-  User.updateOne(
-    { _id: _id },
-    { paid: paid, transactionNumber: transactionNumber }
-  )
-    .then((result) => {
-      var params = {
-        to_name: fullName,
-        to_mail: email,
-        main_message: paid
-          ? "Your Payment has been successfully Verified by the Administrator.\nOur Team is very Eager to meet you up in the event. Wish you have a safe journey.\nRegards, Team TechUtsav24."
-          : "Your Payment transaction address is not matched. Please check the transaction id of your Payment and try once again.\n Thank you.\nRegards, Team TechUtsav24.",
-      };
-      // console.log(params);
-      emailjs
-        .send("service_1o6asp3", "template_30ahbql", params, {
-          publicKey: "NuqZNK9_2HRsMPffr",
-          privateKey: "1MLMSzsTl4VFlg5o4a_8k",
-        })
-        .then((result) => {
-          // console.log(result);
-          // console.log("Email Sent!");
-        })
-        .catch((err) => {
-          // console.log(err);
-        });
-      res.status(200).json({ msg: "Success" });
-    })
-    .catch((err) => {
-      // console.log(err);
-      res.status(400).json({ msg: "Error" });
-    });
-};
+//   User.updateOne(
+//     { _id: _id },
+//     { paid: paid, transactionNumber: transactionNumber }
+//   )
+//     .then((result) => {
+//       var params = {
+//         to_name: fullName,
+//         to_mail: email,
+//         main_message: paid
+//           ? "Your Payment has been successfully Verified by the Administrator.\nOur Team is very Eager to meet you up in the event. Wish you have a safe journey.\nRegards, Team TechUtsav24."
+//           : "Your Payment transaction address is not matched. Please check the transaction id of your Payment and try once again.\n Thank you.\nRegards, Team TechUtsav24.",
+//       };
+//       // console.log(params);
+//       emailjs
+//         .send("service_1o6asp3", "template_30ahbql", params, {
+//           publicKey: "NuqZNK9_2HRsMPffr",
+//           privateKey: "1MLMSzsTl4VFlg5o4a_8k",
+//         })
+//         .then((result) => {
+//           // console.log(result);
+//           // console.log("Email Sent!");
+//         })
+//         .catch((err) => {
+//           // console.log(err);
+//         });
+//       res.status(200).json({ msg: "Success" });
+//     })
+//     .catch((err) => {
+//       // console.log(err);
+//       res.status(400).json({ msg: "Error" });
+//     });
+// };
